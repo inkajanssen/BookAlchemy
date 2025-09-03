@@ -1,0 +1,140 @@
+/* A simple CSS reset to ensure consistent styling across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    line-height: 1.6;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 100%; /* Ensure h1 spans the full width to center correctly */
+}
+
+p {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 100%;
+}
+
+/* Container for forms and book entries */
+form, .book-entry, .controls {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Button styles */
+input[type="submit"],
+button {
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-right: 0.5rem;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: #ffffff;
+    padding: 0.2rem 0.4rem; /* Even smaller padding */
+    font-size: 0.65rem; /* Even smaller font size */
+    margin-left: 1rem; /* Added margin to separate from the title */
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Book list specific styles */
+.controls {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    gap: 1rem;
+    justify-content: center; /* Center the buttons and forms */
+    max-width: 600px;
+    margin: 0 auto 1.5rem; /* Center the controls div */
+}
+
+.controls form, .controls button {
+    margin: 0; /* Remove default margins for children of controls */
+}
+
+/* Style the container for each book entry to be a flexbox */
+div:has(h3) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 0.5rem;
+}
+
+/* Adjust the h3 within the book entry div */
+div:has(h3) h3 {
+    margin: 0;
+}

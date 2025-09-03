@@ -1,11 +1,16 @@
-from flask import Flask, render_template, request
+from flask import Flask,flash, render_template, request, redirect, url_for
+from flask.cli import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 import os
 from data_models import db, Author, Book
 from datetime import datetime
+import dotenv
 
 #Initialize Flask app
 app = Flask(__name__)
+#Secret key for flash
+load_dotenv()
+app.secret_key = os.getenv('SECRET_KEY')
 #Define base dir for app and URI
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir,
@@ -31,6 +36,10 @@ def home():
     else:
         books = query.order_by(Book.book_title).all()
         order_by = 'title'
+
+    if not books and search_keyword:
+        message = f"No book was found with the keyword {search_keyword}"
+        return render_template('home.html', message=message, search_keyword= search_keyword)
 
     return render_template('home.html', books= books,
                            order_by= order_by, search_keyword=search_keyword)
@@ -90,9 +99,25 @@ def add_book():
         # add to db
         db.session.add(new_author)
         db.session.commit()
-        return f"{book_title} was added successfully to the database!"
+        return f"{book_title} was successfully added to the database!"
 
     return render_template('add_book.html', authors=authors)
+
+
+@app.route('/book/<int:book_id>/delete', methods=['Post'])
+def delete_book(book_id):
+
+    book_to_delete = Book.query.get(book_id)
+
+    if not book_to_delete:
+        flash('Book not found!')
+        return redirect(url_for('home'))
+
+    db.session.delete(book_to_delete)
+    db.session.commit()
+
+    flash(f"Book {book_to_delete} has sucessfully been deleted")
+    return redirect(url_for('home'))
 
 
 if __name__ == "__main__":
