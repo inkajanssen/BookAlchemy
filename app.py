@@ -19,11 +19,20 @@ def home():
     """
     Renders home page of app
     """
-    return render_template('home.html')
+    order_by = request.args.get('order_by')
 
-@app.route('/add_author', methods=['GET', 'POST'])
+    if order_by == 'author':
+        books = Book.query.join(Author).order_by(Author.author_name).all()
+    else:
+        books = Book.query.order_by(Book.book_title).all()
+        order_by = 'title'
+
+    return render_template('home.html', books= books, order_by= order_by)
+
+
+@app.route('/add_author', methods=['GET','POST'])
 def add_author():
-    """Create a route to get all books and add books"""
+    """Create a route to add authors"""
     if request.method == 'POST':
         author_name = request.form.get('name')
         birth_date_str = request.form.get('birthdate')
@@ -41,6 +50,43 @@ def add_author():
         db.session.commit()
         return f"{author_name} was added successfully to the database!"
     return render_template('add_author.html')
+
+
+@app.route('/add_book', methods=['GET','POST'])
+def add_book():
+    """Create a route to add books"""
+    authors = Author.query.order_by(Author.author_name).all()
+
+    if request.method == 'POST':
+        book_title = request.form.get('title')
+        book_isbn = request.form.get('isbn')
+        author_id_str = request.form.get('author_id')
+        publication_date_str = request.form.get('publication_date')
+
+        # Convert str to data
+        try:
+            publication_date = datetime.strptime(publication_date_str,
+                                                 '%Y-%m-%d').date()
+        except (ValueError, TypeError):
+            return "Error: Invalid publication date", 400
+
+        if not author_id_str:
+            return "Error: Please select an author", 400
+        try:
+            author_id = int(author_id_str)
+        except ValueError:
+            return "Error: Invalid author ID", 400
+
+        # Create book
+        new_author = Book(book_isbn = book_isbn ,publication_date=
+        publication_date,book_title= book_title,author_id = author_id)
+
+        # add to db
+        db.session.add(new_author)
+        db.session.commit()
+        return f"{book_title} was added successfully to the database!"
+
+    return render_template('add_book.html', authors=authors)
 
 
 if __name__ == "__main__":

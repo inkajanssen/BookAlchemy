@@ -7,11 +7,26 @@
   </head>
   <body>
     <h1>Welcome to Book Alchemy</h1>
-    <p> This is a test to see if the home page loads</p>
-    {% for book in books %}
-    <div> <h3>{{ book.title }}</h3>
+    <p> These are the books in the database:</p>
+
+    <div class="controls">
+      <form action="/" method="get">
+        <label for="order_by">Sort by:</label>
+        <select name="order_by" id="order_by">
+          <option value="title" {% if order_by == 'title' %}selected{% endif %}>Title</option>
+          <option value="author" {% if order_by == 'author' %}selected{% endif %}>Author</option>
+        </select>
+        <button type="submit">Sort</button>
+      </form>
     </div>
-    {% endfor %}
+
+    {% for book in books %}
+    <div> <h3>{{ book.book_title }} by {{book.author.author_name}}</h3>
+    </div>
+    {% endfor %}<br><br>
+
+  <button onclick="window.location.href='/add_book'">Add Book</button>
+  <button onclick="window.location.href='/add_author'">Add Author</button>
 
   </body>
 </html>
