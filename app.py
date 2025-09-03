@@ -20,14 +20,20 @@ def home():
     Renders home page of app
     """
     order_by = request.args.get('order_by')
+    search_keyword = request.args.get('search_keyword')
+
+    query = Book.query
+    if search_keyword:
+        query = query.filter(Book.book_title.ilike(f"%{search_keyword}%"))
 
     if order_by == 'author':
-        books = Book.query.join(Author).order_by(Author.author_name).all()
+        books = query.join(Author).order_by(Author.author_name).all()
     else:
-        books = Book.query.order_by(Book.book_title).all()
+        books = query.order_by(Book.book_title).all()
         order_by = 'title'
 
-    return render_template('home.html', books= books, order_by= order_by)
+    return render_template('home.html', books= books,
+                           order_by= order_by, search_keyword=search_keyword)
 
 
 @app.route('/add_author', methods=['GET','POST'])

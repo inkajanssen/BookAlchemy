@@ -18,7 +18,17 @@
         </select>
         <button type="submit">Sort</button>
       </form>
+
+      <form action="/" method="get">
+        <label for="search_keyword">Search</label>
+        <input type="text" name="search_keyword" id="search_keyword" value="{{search_keyword}}"placeholder="Enter a keyword here">
+        <input type="hidden" name="order_by" value="{{order_by}}">
+        <button type="submit">Search</button>
+      </form>
+
     </div>
+
+
 
     {% for book in books %}
     <div> <h3>{{ book.book_title }} by {{book.author.author_name}}</h3>
